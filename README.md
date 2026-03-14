@@ -47,17 +47,26 @@ flowchart LR
         B[📊 dbt Schemas<br/>7 models]
     end
     
-    subgraph "AI Layer"
-        C[Gemini 2.0 Flash<br/>Context-grounded Q&A]
+    subgraph "Embedding Layer"
+        C[Gemini Embedding 001<br/>Text → Vectors]
+        D[(ChromaDB<br/>Vector Store<br/>22 chunks)]
+    end
+    
+    subgraph "Retrieval + Generation"
+        E[Semantic Search<br/>Top-k=5 retrieval]
+        F[Gemini 2.0 Flash<br/>Grounded answer]
     end
     
     subgraph "User Interface"
-        D[💬 Chat UI<br/>GitHub Pages]
+        G[💬 Streamlit Chat UI<br/>localhost:8501]
     end
     
     A --> C
     B --> C
     C --> D
+    D --> E
+    E --> F
+    F --> G
 ```
 
 ---
