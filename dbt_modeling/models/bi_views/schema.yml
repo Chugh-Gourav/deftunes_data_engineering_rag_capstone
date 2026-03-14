@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: interactions_per_artist_vw
+    description: "Likes, dislikes, skips and playlist adds per artist per year"
+    columns:
+      - name: interaction_year
+      - name: artist_name
+      - name: action
+      - name: total_interactions
+
+  - name: interactions_per_country_vw
+    description: "Likes, dislikes, skips and playlist adds per country per month"
+    columns:
+      - name: interaction_month
+      - name: interaction_year
+      - name: country_code
+      - name: action
+      - name: total_interactions

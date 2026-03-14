@@ -1,0 +1,61 @@
+
+version: 2
+
+models:
+  - name: fact_session
+    description: "Fact session table - user listening sessions"
+    columns:
+      - name: session_id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: user_id
+      - name: song_id
+      - name: artist_id
+      - name: session_start_time
+  - name: fact_feedback
+    description: "Fact feedback table - explicit user interactions (like, dislike, skip, playlist add)"
+    columns:
+      - name: feedback_id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: user_id
+      - name: song_id
+      - name: action
+      - name: timestamp
+  - name: dim_songs
+    description: "Song dimensional table"
+    columns:
+      - name: song_id
+        description: "The primary key for this table"
+      - name: artist_id
+      - name: track_id
+      - name: title
+      - name: release
+      - name: year
+  - name: dim_artists
+    description: "Artist dimensional table"
+    columns:
+      - name: artist_id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: artist_mbid
+      - name: artist_name
+  - name: dim_users
+    description: "Users dimensional table"
+    columns:
+      - name: user_id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: user_lastname
+      - name: user_name
+      - name: user_since
+      - name: place_name
+      - name: country_code
