@@ -202,6 +202,7 @@ As an AI PM, managing the **Unit Economics** of an LLM feature is as important a
 *   **Input Cost**: $0.10 per 1 million tokens.
 *   **Output Cost**: $0.40 per 1 million tokens.
 *   **Cost per Query**: **$0.00027** (roughly 1/37th of a cent).
+*   **Verified Benchmark**: A query for *"Likes by artist and country"* used **233 prompt tokens** and **248 output tokens** in our test environment.
 *   **Scale Efficiency**: You can run **~3,700 queries for $1.00**.
 
 ### 3. The RAG vs. Long-Context Tradeoff
