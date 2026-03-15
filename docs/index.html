@@ -365,7 +365,7 @@
     // the app runs purely client-side on GitHub Pages.
     // ══════════════════════════════════════════════════════════════
     const KNOWLEDGE_BASE = `
-DATA CONTRACT: DefTunes Raw Landing Data (v2.0.0)
+DATA CONTRACT: DefTunes Raw Landing Data (v3.1.0)
 Owner: Data Engineering Team
 Server: BigQuery | Project: ai-data-product-work | Dataset: deftunes_landing_zone
 SLA: Availability 99.9% | Freshness: Max delay 24h based on session_start_time
@@ -407,7 +407,7 @@ Columns:
 - feedback_id (string): Unique identifier for the feedback event [Required, PRIMARY KEY]
 - user_id (string): Identifier of the user (FK to raw_users) [Required]
 - song_id (string): Identifier of the song (FK to raw_songs) [Required]
-- action (string): Type of interaction: LIKE, DISLIKE, SKIP, or ADD_TO_PLAYLIST
+- action (string): Type of interaction: LIKE, DISLIKE, SKIP, or ADD_TO_PLAYLIST [Quality: accepted_values: LIKE, DISLIKE, SKIP, ADD_TO_PLAYLIST]
 - timestamp (timestamp): Timestamp when the feedback was given
 
 Quality Rules (Landing):
@@ -422,7 +422,7 @@ Quality Rules (Landing):
 
 ---
 
-DATA CONTRACT: DefTunes Core Analytics Models (v2.0.0)
+DATA CONTRACT: DefTunes Core Analytics Models (v3.1.0)
 Owner: Data Analytics Team
 Server: BigQuery | Project: ai-data-product-work | Dataset: deftunes_transform_db
 SLA: Availability 99.9% | Freshness: Max delay 24h based on session_start_time
@@ -442,7 +442,7 @@ Columns:
 - feedback_id (string): Unique identifier [Required, PRIMARY KEY]
 - user_id (string): FK to dim_users
 - song_id (string): FK to dim_songs
-- action (string): LIKE, DISLIKE, SKIP, or ADD_TO_PLAYLIST
+- action (string): LIKE, DISLIKE, SKIP, or ADD_TO_PLAYLIST [Quality: accepted_values: LIKE, DISLIKE, SKIP, ADD_TO_PLAYLIST]
 - timestamp (timestamp): Timestamp of the feedback event
 
 TABLE: dim_artists (materialized as table)
