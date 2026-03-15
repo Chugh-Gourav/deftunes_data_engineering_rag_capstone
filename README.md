@@ -108,7 +108,7 @@ To keep accuracy high at a larger scale, we would move toward:
 
 ### Measured (Local Testing)
 *Consistent results achieved over 22 core table definitions in a controlled environment:*
-- **Accuracy Baseline:** Achieved **98% grounded precision** using context-constrained retrieval (verified against ODCS v3.1 schemas).
+- **Accuracy Baseline:** Achieved **90%+ grounded precision** using context-constrained retrieval (verified against ODCS v3.1 schemas).
 - **Retrieval Integrity:** Near-zero hallucination rate achieved by enforcing strict prompt-level data grounding.
 
 ### Projected (Production)
