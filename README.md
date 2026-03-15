@@ -17,8 +17,8 @@ When a Data Scientist or BA has to manually hunt for column definitions, quality
 
 ## 🏗️ How It Works
 
-### 1. Unified Data Pipeline
-Data moves from the iTunes and User APIs through a governed pipeline where validation is baked into every step.
+### Architecture Overview
+Data moves across the system following a governed, contract-first design.
 
 ```mermaid
 flowchart LR
@@ -43,29 +43,16 @@ flowchart LR
     J -.-> H
 ```
 
-### 2. AI Discovery Engine
-We use semantic search to ensure the model responds only with verified facts.
-
-```mermaid
-flowchart TD
-    subgraph "Knowledge Retrieval (Offline)"
-        A["ODCS Contracts + dbt Schemas"] --> B["Gemini Embeddings"]
-        B --> C[("ChromaDB (Local)")]
-    end
-    
-    subgraph "Inference (Real-time)"
-        D["User Question"] --> E["Semantic Search (k=5)"]
-        E --> F["Augmented Prompt (Context + Question)"]
-        F --> G["Gemini 2.0 Flash"]
-        G -- "Structured Metadata" --> H["Grounded Answer"]
-    end
-```
+### Data Lifecycle
+1. **Ingest:** We pull raw music catalog and user interaction data from external APIs into our GCS landing zone.
+2. **Transform:** Raw data is validated against ODCS contracts and modeled into clean dimensional tables using dbt.
+3. **Index:** Technical metadata from contracts and schemas is embedded using Gemini and stored in a vector database.
+4. **Serve:** The Streamlit assistant retrieves relevant context and answers natural language questions in real-time.
 
 ---
 
-## 📈 Unit Economics (Directional)
-
-To build a realistic business case, we factor in both the AI's cost and the time a person spends verifying the answer.
+## 📈 Unit Economics (Illustrative Model)
+*Illustrative model — assumptions listed above. Production validation via A/B test measuring time-to-answer vs. manual baseline.*
 
 ### Key Assumptions
 - **London Market Rate:** £65 / hour (Mid-Senior Data Engineer fully-loaded cost).
@@ -105,10 +92,16 @@ Industry leaders are using similar strategies to handle internal documentation a
 ---
 
 ## 🚀 Future Ideas
-As we move toward a production-ready tool, we should explore:
-1.  **Automated Verification:** Can we use a "judge" model to minimize the time a person sticks around to check the answer?
-2.  **Broader Data Silos:** How do we link this to Jira tickets and Slack history to capture "tribal knowledge" that isn't in the official contracts?
-3.  **Actionable AI:** Can the assistant help draft new Data Contracts or suggest schema changes based on user questions?
+1. **Automated Verification:** Using a "judge" model to automatically verify AI answers. *Prioritized first as it directly reduces human verification cost, the dominant driver in our unit economics model.*
+2. **Broader Data Silos:** Linking this to Jira tickets and Slack history to capture "tribal knowledge" that isn't in the official contracts.
+3. **Actionable AI:** Having the assistant suggest schema changes or draft new Data Contracts based on user questions.
+
+---
+
+## 🎯 Production Success Metrics
+* **Retrieval accuracy:** Measured via MRR or NDCG@5 (Target: 95%+).
+* **Answer latency:** p95 service response time (Target: <2s).
+* **Cost efficiency:** Total API cost per query per month (Target: <$0.001).
 
 ---
 
