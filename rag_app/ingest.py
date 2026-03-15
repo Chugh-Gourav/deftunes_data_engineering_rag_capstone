@@ -10,12 +10,13 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 def load_odcs_contracts(directory: str) -> list[Document]:
     """
-    PM CONTEXT: DATA PREPARATION LAYER
-    Transforms raw YAML contracts into AI-readable 'Knowledge Chunks'.
-    
-    Why this matters: LLMs perform best when context is highly structured. 
-    By explicitly parsing YAML fields, we increase the 'Signal-to-Noise Ratio' 
-    compared to just sending raw text files.
+    Reads our YAML data contracts and converts them into structured
+    text chunks that the AI can search through.
+
+    Why we do this: Language models give much better answers when the
+    context we feed them is clean and well-organised.  Parsing the YAML
+    fields explicitly (instead of dumping raw files) means the AI sees
+    clear column names, SLAs, and ownership — not formatting noise.
     """
     documents = []
     yaml_files = glob.glob(os.path.join(directory, "*.yaml"))
@@ -126,12 +127,13 @@ def load_dbt_schemas(directory: str) -> list[Document]:
 
 def build_vector_db():
     """
-    PM CONTEXT: THE KNOWLEDGE INFRASTRUCTURE
-    This function creates our persistent 'Long-Term Memory' (ChromaDB).
-    
-    Trade-off: We use Local ChromaDB for zero-cost and sub-100ms latency.
-    For production scale, a PM would evaluate enterprise alternatives like 
-    Pinecone or BigQuery Vector Search for high-concurrency access.
+    Builds the local vector database (ChromaDB) that acts as the AI's
+    long-term memory for all our data contract knowledge.
+
+    Trade-off note: We use a local ChromaDB instance here because it's
+    free and extremely fast (<100 ms lookups).  In a production setting
+    with many concurrent users, you'd evaluate managed alternatives like
+    Pinecone or BigQuery Vector Search for reliability at scale.
     """
     print("Loading ODCS data contracts...")
     contracts_path = os.path.join("..", "odcs_contracts")

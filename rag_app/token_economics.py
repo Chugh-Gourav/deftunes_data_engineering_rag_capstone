@@ -2,8 +2,8 @@ import os
 import google.generativeai as genai
 
 # Setup
-# PM CONTEXT: We use environment variables for API keys to maintain security 
-# and portability across production environments.
+# We load the API key from an environment variable (never hardcoded).
+# This keeps secrets out of your codebase and makes the script portable.
 # To run this, set your key: export GOOGLE_API_KEY="your-api-key"
 api_key = os.getenv("GOOGLE_API_KEY")
 
@@ -16,8 +16,8 @@ model = genai.GenerativeModel("gemini-2.0-flash")
 system_prompt = """You are an expert Data Product Manager for the DefTunes music streaming platform.
 Use the provided metadata and Open Data Contracts (ODCS) context to answer the user's questions about our data ecosystem."""
 
-# Simulate 5 average chunks (approx 300 words each)
-# PM CONTEXT: This mock context represents a typical k=5 retrieval payload in a RAG system.
+# Simulate 5 average chunks (approx 300 words each).
+# This mock data mirrors what the live app retrieves from ChromaDB for a single query.
 mock_context = """
 CHUNK 1: Table raw_users. Columns: user_id (string), user_name (string), user_since (date), country_code (string).
 CHUNK 2: Table raw_user_feedback. Columns: feedback_id (string), user_id (string), action (string), timestamp (timestamp). Quality rules: accepted_values [LIKE, DISLIKE, SKIP].
