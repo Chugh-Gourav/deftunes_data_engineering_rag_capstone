@@ -160,6 +160,3 @@ deftunes_capstone/
 ## 👤 Author: Gourav Chugh
 **AI/Data Product Manager**  
 [GitHub Portfolio](https://github.com/Chugh-Gourav)
-
----
-*Built for the AI Product Management Capstone — DefTunes Project.*
