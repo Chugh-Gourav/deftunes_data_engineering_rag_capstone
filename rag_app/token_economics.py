@@ -4,11 +4,11 @@ import google.generativeai as genai
 # Setup
 # PM CONTEXT: We use environment variables for API keys to maintain security 
 # and portability across production environments.
+# To run this, set your key: export GOOGLE_API_KEY="your-api-key"
 api_key = os.getenv("GOOGLE_API_KEY")
 
 if not api_key:
-    # Defaulting to the demo key for user convenience in this local prototype
-    api_key = "AQ.Ab8RN6J9oO3UvdWuq7f3TIQMDkbd2_q-xqTRtYp1SZpWOmBVLQ"
+    raise ValueError("ERROR: GOOGLE_API_KEY environment variable not set. Please run 'export GOOGLE_API_KEY=your-key' first.")
 
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-2.0-flash")
