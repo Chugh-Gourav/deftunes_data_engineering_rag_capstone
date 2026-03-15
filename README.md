@@ -1,4 +1,4 @@
-# 🎵 DefTunes: Data Engineering & AI Discoverability Capstone
+# 🎵 DefTunes: Data Engineering & AI Discoverability Prototype
 
 [![Static RAG Demo](https://img.shields.io/badge/Live_Demo-DefTunes_AI-blueviolet?style=for-the-badge&logo=google-gemini)](https://chugh-gourav.github.io/deftunes_data_engineering_rag_capstone/)
 [![ODCS v3.1](https://img.shields.io/badge/Data_Contract-ODCS_v3.1-orange?style=for-the-badge)](odcs_contracts/landing_datacontract.yaml)
