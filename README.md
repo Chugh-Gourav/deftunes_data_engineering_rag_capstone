@@ -97,15 +97,6 @@ To keep accuracy high at a larger scale, we would move toward:
 
 ---
 
-## 🔗 Reference Case Studies & Links
-Industry leaders are using similar strategies to handle internal documentation and compliance:
-
-*   **[KPMG Adoption Case Study](https://www.techuk.org/resource/ai-adoption-case-study-kpmg-s-ava-gen-ai-tool-creates-useable-outputs-improves-efficiences-and-reduces-risk.html):** How AI tools improve efficiencies and reduce risk in professional services.
-*   **[Nasdaq / Progress RAG Platform](https://www.nasdaq.com/press-release/progress-software-unveils-breakthrough-saas-rag-platform-designed-make-trustworthy):** Breakthrough in building trustworthy AI for high-compliance environments.
-*   **[Autodesk Assistant Platform](https://aws.amazon.com/blogs/machine-learning/autodesk-assistant-building-an-agentic-platform-on-amazon-bedrock/):** Moving from basic search to an assistant that navigates complex technical data.
-
----
-
 ## 🚀 Future Ideas
 1. **Automated Verification:** Using a "judge" model to automatically verify AI answers. *Prioritized first as it directly reduces human verification cost, the dominant driver in our unit economics model.*
 2. **Broader Data Silos:** Linking this to Jira tickets and Slack history to capture "tribal knowledge" that isn't in the official contracts.
@@ -143,6 +134,14 @@ In metadata discovery, **Precision should beat Recall**. It is better for the AI
 * **Cost efficiency:** Target total API cost per query of <$0.001.
 
 ---
+## 🔗 Reference Case Studies & Links
+Industry leaders are using similar strategies to handle internal documentation and compliance:
+
+*   **[KPMG Adoption Case Study](https://www.techuk.org/resource/ai-adoption-case-study-kpmg-s-ava-gen-ai-tool-creates-useable-outputs-improves-efficiences-and-reduces-risk.html):** How AI tools improve efficiencies and reduce risk in professional services.
+*   **[Nasdaq / Progress RAG Platform](https://www.nasdaq.com/press-release/progress-software-unveils-breakthrough-saas-rag-platform-designed-make-trustworthy):** Breakthrough in building trustworthy AI for high-compliance environments.
+*   **[Autodesk Assistant Platform](https://aws.amazon.com/blogs/machine-learning/autodesk-assistant-building-an-agentic-platform-on-amazon-bedrock/):** Moving from basic search to an assistant that navigates complex technical data.
+
+---
 
 ## 📂 Project Structure
 ```
@@ -156,6 +155,3 @@ deftunes_capstone/
 ## 👤 Author: Gourav Chugh
 **AI/Data Product Manager**  
 [GitHub Portfolio](https://github.com/Chugh-Gourav)
-
----
-*Built for the AI Product Management Capstone — DefTunes Project.*
