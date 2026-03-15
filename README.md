@@ -18,29 +18,34 @@ When a Data Scientist or BA has to manually hunt for column definitions, quality
 ## 🏗️ How It Works
 
 ### Architecture Overview
-Data moves across the system following a governed, contract-first design.
+A unified view of the contract-governed data pipeline and the AI-powered discovery engine.
 
 ```mermaid
-flowchart LR
-    subgraph "Ingestion (Raw)"
-        A["iTunes API"] --> C["generate_data.py"]
-        B["User API"] --> C
+flowchart TD
+    subgraph "Phase 1: Governed Data Pipeline (Offline)"
+        direction LR
+        A["iTunes/User APIs"] --> B["generate_data.py"]
+        B --> C[("GCS Data Lake")]
+        C --> D{"ODCS Validation"}
+        D -- "Pass" --> E[("BQ Landing")]
+        E --> F["dbt Modeling"]
+        F --> G{"ODCS Validation"}
+        G -- "Pass" --> H[("BQ Serving")]
     end
-    
-    subgraph "Validation & Governance"
-        D[("GCS Data Lake")] --> E{"Landing Contract (ODCS)"}
-        E -- "Pass" --> F[("BigQuery Landing")]
-        F --> G["dbt Transformations"]
-        G --> H{"Serving Contract (ODCS)"}
-        H -- "Pass" --> I[("BigQuery Serving")]
+
+    subgraph "Phase 2: AI Discovery Engine (Online)"
+        direction TB
+        I["ODCS Contracts + dbt Schemas"] --> J["Gemini Embeddings"]
+        J --> K[("ChromaDB Index")]
+        
+        L["User Question"] --> M["Semantic Search"]
+        K --> M
+        M --> N["Augmented Prompt"]
+        N --> O["Gemini 2.0 Flash"]
+        O -- "Grounded Answer" --> P["Product Metadata"]
     end
-    
-    subgraph "Orchestration"
-        J["Airflow / Composer"]
-    end
-    J -.-> E
-    J -.-> G
-    J -.-> H
+
+    H -.-> I
 ```
 
 ### Data Lifecycle
