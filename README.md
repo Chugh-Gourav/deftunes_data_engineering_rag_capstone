@@ -5,13 +5,16 @@
 
 ---
 
-## 📖 The Story
+## 📖 The Story: Bridging the "Knowledge Gap"
 
-Every data team shares the same pain point. An analyst pings you on Slack: *"Hey, which table has the user's country code?"* A product manager opens a ticket: *"What quality rules protect our feedback data?"* A new engineer spends 45 minutes searching through YAML files to find an SLA definition.
+Every data-driven organization faces a silent bottleneck. It starts with a Slack message:
+*   **Data Scientist:** *"Hey, which table has the raw user country code? I need it for this uplift model."*
+*   **Business Analyst:** *"What are the quality rules for 'fact_feedback'? I'm seeing weird skips in the dashboard."*
+*   **Product Manager:** *"Who owns the songs metadata SLA? I need to know if we can promise 99.9% freshness."*
 
-These questions aren't hard — the answers **do** exist, scattered across ODCS contracts, dbt schema files, and documentation. The real cost is the **interruption** and the **latency** of human communication. At scale, this is a massive productivity drain.
+The answers **do** exist, hidden in ODCS contracts and dbt schemas. But for the **BA and Data Science communities**, the frictionless access to this metadata is the difference between a same-day decision and a week-long research ticket. When discovery is instant, decisions are not just faster — they are **accurate**.
 
-**DefTunes AI** is a Retrieval-Augmented Generation (RAG) assistant that solves this. It ingests formal data contracts and dbt metadata into a local vector database, using **Gemini 2.0 Flash** to provide grounded, sub-2s answers to any schema or governance question.
+**DefTunes AI** is a Retrieval-Augmented Generation (RAG) assistant designed for this exact purpose. It turns documentation into a conversation, grounded in technical truth, delivering sub-2s answers to the people who need them most.
 
 ---
 
@@ -63,30 +66,29 @@ flowchart TD
 
 ---
 
-## 📊 Unit Economics — London Market Benchmark
+## 📈 Unit Economics & Scalability
 
-As a Product Manager, I've modelled the ROI based on **London-specific engineering costs**. The efficiency gain is not just in dollars, but in **Engineering Velocity**.
+As a Product Manager, I've modelled the ROI based on **London-specific mid-to-senior engineering costs**.
 
-### Assumptions
+### London Market Assumptions
 
 | Parameter | Value | Rationale |
 | :--- | :--- | :--- |
-| **Engineer Avg Salary (London)** | **£85,000** | Mid-to-senior Data Engineer average (City of London) |
-| **Blended Rate (inc. Benefits)** | **£65 / hour** | Total employer cost (Pension, NI, Office, Tools) |
-| **Manual Lookup Time** | **15 minutes** | Context switching + finding YAML + verifying |
-| **AI Query Latency** | **< 2.0s** | Real-time response using Gemini 2.0 Flash |
+| **Engineer Avg Salary (London)** | **£85,000** | City of London benchmark for Data/DS roles |
+| **Blended Rate (inc. Benefits)** | **£65 / hour** | Total employer cost (Pension, NI, overheads) |
+| **Manual Lookup Time** | **15 minutes** | Context switching + searching + verification |
 | **AI Query Cost** | **$0.0003** | Based on ~2,100 tokens per query |
 
-### Per-Query Comparison
+### 🧠 The Scalability Challenge: 22 vs. 22,000 Chunks
 
-```
-Manual Lookup Cost    = 0.25 hours × £65  ≈ £16.25 (~$20.80)
-AI Query Cost         = ~2,100 Tokens     ≈ $0.0003
-                        ----------------------------
-ROI per Single Query  = 99.998% Cost Reduction
-```
+One might ask: *"If the knowledge base grows 1,000x, does the cost explode?"*
 
-> **The "Hidden" ROI:** Beyond the £16 saving per question, the lack of interruption allows engineers to stay in **Deep Work**. A team of 10 asking 2 questions a day saves **£6,500/month** in pure time-value, while costing less than **$0.20** in total API tokens.
+**The short answer: No.**
+
+The "Magic of RAG" is that it decouples knowledge size from LLM cost. 
+- **Fixed Cost:** Even if we have 22,000 chunks, we still only retrieve the top **k = 5** chunks to feed the LLM. The token count remains stable, so the **per-query cost stays fixed at ~$0.0003**.
+- **Explosive ROI:** As data complexity grows, the manual lookup time for a human increases exponentially (it might take 2 hours to find an answer in a 22k-chunk doc repo). This means the **AI’s ROI actually increases as the system scales**.
+- **Challenge:** The bottleneck shifts to *retrieval accuracy* (ensuring the vector search finds the right 5 chunks out of 22k). To solve this at scale, we would implement **HyDE (Hypothetical Document Embeddings)** or a **Reranker** layer.
 
 ---
 
@@ -94,10 +96,10 @@ ROI per Single Query  = 99.998% Cost Reduction
 
 | Metric | Benchmark | PM Insight |
 | :--- | :--- | :--- |
-| **Token Efficiency** | ~1.8k - 2.2k tokens | Optimized via `k=5` retrieval to balance context vs. cost. |
-| **Unit Cost** | **$0.0003 / query** | Enables unlimited internal search without budget concerns. |
-| **Latency** | **1.5s - 1.8s** | Sub-2s response time ensures high retention for the tool. |
-| **Accuracy** | ~99% | Grounded in ODCS contracts with strict "I don't know" guardrails. |
+| **Token Efficiency** | ~2.1k tokens | Optimized via `k=5` to balance cost vs context. |
+| **Unit Cost** | **$0.0003 / query** | Lower than the cost of a single Slack notification. |
+| **Latency** | **< 2.0s** | Sub-2s response ensures "snappy" discovery for BAs. |
+| **Accuracy** | ~99% | Grounded in ODCS contracts with strict negative constraints. |
 
 ---
 
