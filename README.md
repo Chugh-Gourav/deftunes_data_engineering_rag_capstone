@@ -67,7 +67,7 @@ flowchart LR
 ---
 
 ## 📈 Unit Economics (Illustrative Model)
-*Illustrative model — assumptions listed above. Production validation via A/B test measuring time-to-answer vs. manual baseline.*
+*Illustrative model — assumptions listed above. Production validation to be done via A/B test measuring time-to-answer vs. manual baseline.*
 
 ### Key Assumptions
 - **London Market Rate:** £65 / hour (Mid-Senior Data Engineer fully-loaded cost).
@@ -85,7 +85,7 @@ flowchart LR
 
 ## 🧠 Scaling the System: 22 vs. 22,000 Chunks
 
-As the knowledge base grows 1,000x, we shift our strategy to maintain accuracy.
+As the knowledge base grows 1,000x, we can shift our strategy to maintain accuracy.
 
 **1. Stable Costs**
 RAG decouples data size from AI cost. Even at 22,000 chunks, we only retrieve the top **k=5** matches, so the AI token cost stays fixed at **~$0.0003/query**.
@@ -117,8 +117,8 @@ Industry leaders are using similar strategies to handle internal documentation a
 *Based on initial laboratory testing and discovery velocity benchmarks:*
 
 - **Discovery Velocity:** Average time-to-answer for metadata questions **could be reduced** from **15 minutes** (manual search) to **<30 seconds** (AI-assisted).
-- **Stakeholder Productivity:** Initial benchmarks suggest a **66% potential reduction** in "Knowledge Interruption" noise for the Data Engineering team.
-- **Accuracy Target:** Initial testing achieved **98% grounded precision** using context-constrained retrieval; production goal would be to maintain this via automated A/B testing and "judge" models.
+- **Stakeholder Productivity:** Initial benchmarks (reference section) suggest a **66% potential reduction** in "Knowledge Interruption" noise for the Data Engineering team.
+- **Accuracy Target:** Initial testing achieved **95%+ grounded precision** using context-constrained retrieval; production goal would be to maintain this via automated A/B testing and "judge" models.
 
 ---
 
@@ -137,8 +137,9 @@ In metadata discovery, **Precision should beat Recall**. It is better for the AI
 
 ## 🎯 Production Success Metrics (Roadmap)
 *The following targets would form the basis of a production Pilot:*
-* **Retrieval accuracy:** Target MRR or NDCG@5 of 95%+.
-* **Answer latency:** Target p95 service response time of <2s.
+* **Retrieval accuracy:** Target MRR (MRR (Mean Reciprocal Rank)
+) or NDCG@5 (Normalized Discounted Cumulative Gain at 5) of 75%+.
+* **Answer latency:** Target p95 service response time of <3s.
 * **Cost efficiency:** Target total API cost per query of <$0.001.
 
 ---
