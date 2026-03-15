@@ -1,6 +1,7 @@
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
 *.egg-info/
 venv/
 .env
@@ -12,6 +13,7 @@ dbt_modeling/dbt_packages/
 
 # RAG App
 rag_app/chroma_db/
+rag_app/venv/
 
 # OS
 .DS_Store
@@ -20,3 +22,5 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo

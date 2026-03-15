@@ -50,18 +50,37 @@ def load_odcs_contracts(directory: str) -> list[Document]:
                     for field_name, field_info in fields.items():
                         req = "Required" if field_info.get("required") else "Optional"
                         pk = " [PRIMARY KEY]" if field_info.get("primary") else ""
-                        schema_text += f"- {field_name} ({field_info.get('type')}): {field_info.get('description')} [{req}]{pk}\n"
+                        field_quality = field_info.get("quality", [])
+                        quality_str = ""
+                        if field_quality:
+                            quality_str = f" [Quality: {', '.join(str(q) for q in field_quality)}]"
+                        schema_text += f"- {field_name} ({field_info.get('type')}): {field_info.get('description')} [{req}]{pk}{quality_str}\n"
                         
                     documents.append(Document(page_content=schema_text, metadata={"source": os.path.basename(file_path), "type": "schema", "model": model_name}))
                 
-                # Document 3: Quality rules
+                # Document 3: Quality rules (Table-level + Field-level)
+                quality_text = f"Quality Rules for {title}:\n"
+                has_rules = False
+                
+                # Global rules
                 if "quality" in data:
                     rules = data["quality"].get("rules", [])
-                    if rules:
-                        quality_text = f"Quality Rules for {title}:\n"
-                        for rule in rules:
-                            quality_text += f"- {rule}\n"
-                        documents.append(Document(page_content=quality_text, metadata={"source": os.path.basename(file_path), "type": "quality"}))
+                    for rule in rules:
+                        quality_text += f"- [Global] {rule}\n"
+                        has_rules = True
+                
+                # Scour fields for rules
+                for model_name, model_details in models.items():
+                    fields = model_details.get("fields", {})
+                    for field_name, field_info in fields.items():
+                        if "quality" in field_info:
+                            field_rules = field_info.get("quality", [])
+                            for f_rule in field_rules:
+                                quality_text += f"- [{model_name}.{field_name}] {f_rule}\n"
+                                has_rules = True
+                
+                if has_rules:
+                    documents.append(Document(page_content=quality_text, metadata={"source": os.path.basename(file_path), "type": "quality"}))
                     
             except yaml.YAMLError as exc:
                 print(f"Error parsing YAML file {file_path}: {exc}")
