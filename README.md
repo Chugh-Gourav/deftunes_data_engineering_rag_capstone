@@ -133,8 +133,8 @@ In metadata discovery, **Precision should beat Recall**. It is better for the AI
 
 ## 🎯 Production Success Metrics (Roadmap)
 *The following targets would form the basis of a production Pilot:*
-* **Retrieval accuracy:** Target MRR or NDCG@5 (Target: 95%+).
-* **Answer latency:** Target p95 service response time of <2s.
+* **Retrieval accuracy:** Target MRR (Mean Reciprocal Rank) or NDCG@5 (Normalized Discounted Cumulative Gain at 5) of 75%+.
+* **Answer latency:** Target p95 service response time of <3s.
 * **Cost efficiency:** Target total API cost per query of <$0.001.
 
 ---
