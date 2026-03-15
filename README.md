@@ -18,34 +18,44 @@ When a Data Scientist or BA has to manually hunt for column definitions, quality
 ## 🏗️ How It Works
 
 ### Architecture Overview
-A unified view of the contract-governed data pipeline and the AI-powered discovery engine.
+A unified view of the system divided into functional workstreams: **Data Engineering**, **AI Indexing**, and **AI Discovery**.
 
 ```mermaid
-flowchart TD
-    subgraph "Phase 1: Governed Data Pipeline (Offline)"
+flowchart LR
+    subgraph DE ["1. Data Engineering (Offline)"]
         direction LR
-        A["iTunes/User APIs"] --> B["generate_data.py"]
-        B --> C[("GCS Data Lake")]
-        C --> D{"ODCS Validation"}
-        D -- "Pass" --> E[("BQ Landing")]
-        E --> F["dbt Modeling"]
-        F --> G{"ODCS Validation"}
-        G -- "Pass" --> H[("BQ Serving")]
+        S1["APIs"] --> P1["Ingest"]
+        P1 --> DL[("GCS Lake")]
+        DL --> V1{"ODCS"}
+        V1 -- "Pass" --> DBT["dbt"]
+        DBT --> BQS[("BQ Serving")]
     end
 
-    subgraph "Phase 2: AI Discovery Engine (Online)"
+    subgraph AII ["2. AI Indexing (Offline)"]
         direction TB
-        I["ODCS Contracts + dbt Schemas"] --> J["Gemini Embeddings"]
-        J --> K[("ChromaDB Index")]
-        
-        L["User Question"] --> M["Semantic Search"]
-        K --> M
-        M --> N["Augmented Prompt"]
-        N --> O["Gemini 2.0 Flash"]
-        O -- "Grounded Answer" --> P["Product Metadata"]
+        MD["Schemas & Contracts"] --> EMB["Gemini Embeddings"]
+        EMB --> VDB[("ChromaDB")]
     end
 
-    H -.-> I
+    subgraph RAG ["3. AI Discovery (Online)"]
+        direction TB
+        U["User Question"] --> SS["Semantic Search"]
+        VDB --> SS
+        SS --> LLM["Gemini 2.0"]
+        LLM --> A["Grounded Answer"]
+    end
+
+    %% Connection between Pipeline and AI
+    BQS -.-> MD
+
+    %% Styling
+    classDef de fill:#f0f7ff,stroke:#0770E3,stroke-width:2px,color:#0770E3;
+    classDef ai fill:#fff9f0,stroke:#fb8c00,stroke-width:2px,color:#fb8c00;
+    classDef rag fill:#f9f0ff,stroke:#7c3aed,stroke-width:2px,color:#7c3aed;
+    
+    class DE de;
+    class AII ai;
+    class RAG rag;
 ```
 
 ### Data Lifecycle
