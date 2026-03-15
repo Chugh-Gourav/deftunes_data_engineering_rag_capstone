@@ -20,6 +20,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
 from airflow.operators.empty import EmptyOperator
+from airflow.operators.bash import BashOperator
 
 # ──────────────────────────────────────────────────────────────────────────
 # DAG CONFIGURATION
@@ -94,15 +95,36 @@ with DAG(
         write_disposition="WRITE_TRUNCATE",
     )
 
+    # ──────────────────────────────────────────────────────────────────
+    # DATA CONTRACT VALIDATION
+    # Uses the open-source datacontract CLI to enforce the ODCS YAML rules
+    # against the newly loaded BigQuery tables. If this fails, the DAG halts.
+    # ──────────────────────────────────────────────────────────────────
+    validate_landing_data = BashOperator(
+        task_id="validate_landing_data_contract",
+        bash_command="datacontract test --server bigquery --contract ./odcs_contracts/landing_datacontract.yaml"
+    )
+
     # Placeholder for dbt transformation step
     # In production, this would call `dbt run` via BashOperator or KubernetesPodOperator
     dbt_transform = EmptyOperator(task_id="dbt_transform_placeholder")
+
+    # ──────────────────────────────────────────────────────────────────
+    # SERVING CONTRACT VALIDATION
+    # Validates the output of the dbt models against the serving contract.
+    # ──────────────────────────────────────────────────────────────────
+    validate_serving_data = BashOperator(
+        task_id="validate_serving_data_contract",
+        bash_command="datacontract test --server bigquery --contract ./odcs_contracts/serving_datacontract.yaml"
+    )
 
     end = EmptyOperator(task_id="end")
 
     # ──────────────────────────────────────────────────────────────────
     # TASK DEPENDENCIES
-    # All landing zone loads run in parallel after start,
-    # then dbt transforms run after all loads complete.
+    # All landing zone loads run in parallel.
+    # When complete, validate the landing contract.
+    # If validation passes, run dbt transforms.
+    # If transforms succeed, validate the serving contract before finishing.
     # ──────────────────────────────────────────────────────────────────
-    start >> [load_users, load_songs, load_sessions, load_feedback] >> dbt_transform >> end
+    start >> [load_users, load_songs, load_sessions, load_feedback] >> validate_landing_data >> dbt_transform >> validate_serving_data >> end

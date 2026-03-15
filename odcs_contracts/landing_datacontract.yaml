@@ -119,6 +119,9 @@ models:
       action:
         type: string
         description: "Type of interaction: LIKE, DISLIKE, SKIP, or ADD_TO_PLAYLIST."
+        quality:
+          - type: accepted_values
+            values: ['LIKE', 'DISLIKE', 'SKIP', 'ADD_TO_PLAYLIST']
       timestamp:
         type: timestamp
         description: Timestamp when the feedback was given.
