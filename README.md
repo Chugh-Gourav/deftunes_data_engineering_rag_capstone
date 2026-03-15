@@ -113,32 +113,33 @@ Industry leaders are using similar strategies to handle internal documentation a
 
 ---
 
-## 📊 Quantified Discovery Impact
-*In a controlled simulation measuring technical metadata retrieval at DefTunes:*
+## 📈 Projected Discovery Impact
+*Based on initial laboratory testing and discovery velocity benchmarks:*
 
-- **Discovery Velocity:** Reduced average time-to-answer for metadata questions from **15 minutes** (manual Slack/search) to **<30 seconds** (AI search).
-- **Stakeholder Productivity:** Estimated **66% reduction** in "Knowledge Interruption" tickets for the Data Engineering team.
-- **Accuracy Baseline:** Achieved **98% grounded precision** using context-constrained retrieval (verified against 22 core table definitions).
+- **Discovery Velocity:** Average time-to-answer for metadata questions **could be reduced** from **15 minutes** (manual search) to **<30 seconds** (AI-assisted).
+- **Stakeholder Productivity:** Initial benchmarks suggest a **66% potential reduction** in "Knowledge Interruption" noise for the Data Engineering team.
+- **Accuracy Target:** Initial testing achieved **98% grounded precision** using context-constrained retrieval; production goal would be to maintain this via automated A/B testing and "judge" models.
 
 ---
 
 ## 🧠 Lessons Learned & Tactical Judgment
 
-### 1. Data Engineering is the AI Bottleneck
-The "AI" part was the easiest step. The real complexity was in the **Data Engineering**: ensuring that the iTunes and User APIs were correctly modeled, validated against ODCS, and cleaned before indexing. Without high-quality dbt modeling, the RAG tool would simply halluncinate about "junk" data.
+### 1. Data Engineering is the Core Complexity
+While implementing the RAG layer was **relatively easier** than traditional heuristic search, the real complexity remained in the **Data Engineering**. Ensuring that the iTunes and User APIs were correctly modeled and validated against ODCS was essential. Without high-quality dbt modeling, any RAG tool would simply provide faster access to "junk" data.
 
 ### 2. Why ODCS instead of generic Markdown?
-I chose **Open Data Contract Standard (ODCS)** because it provides structured, machine-readable metadata. Unlike messy documentation files, ODCS allows the LLM to understand SLAs and ownership with **near-zero confusion**, which is critical for production governance.
+I chose **Open Data Contract Standard (ODCS)** because it provides structured, machine-readable metadata. This allows the LLM to understand SLAs and ownership with **significantly higher accuracy** than unstructured documentation, which is critical for trustworthy production governance.
 
 ### 3. Precision vs. Recall Trade-offs
-In metadata discovery, **Precision beats Recall**. It is better for the AI to say "I don't know" than to point a Data Scientist to the wrong BigQuery table and break a production pipeline. I implemented strict system prompt constraints to enforce this.
+In metadata discovery, **Precision should beat Recall**. It is better for the AI to state "I don't know" than to point a user to the wrong table. I implemented strict system prompt constraints to enforce this "high-precision" behavior.
 
 ---
 
-## 🎯 Production Success Metrics
-* **Retrieval accuracy:** Measured via MRR or NDCG@5 (Target: 95%+).
-* **Answer latency:** p95 service response time (Target: <2s).
-* **Cost efficiency:** Total API cost per query per month (Target: <$0.001).
+## 🎯 Production Success Metrics (Roadmap)
+*The following targets would form the basis of a production Pilot:*
+* **Retrieval accuracy:** Target MRR or NDCG@5 of 95%+.
+* **Answer latency:** Target p95 service response time of <2s.
+* **Cost efficiency:** Target total API cost per query of <$0.001.
 
 ---
 
@@ -149,7 +150,7 @@ deftunes_capstone/
 ├── rag_app/             # Streamlit Chat UI + ChromaDB (The Discovery Layer)
 └── dbt_modeling/        # Core Business Logic (The Foundation)
 ```
-*Note: This is an original dataset engineering project, utilizing custom ETL pipelines from iTunes/User APIs, not a standard course template.*
+*Note: This is an original dataset engineering project, utilizing custom ETL pipelines from iTunes/User APIs.*
 
 ## 👤 Author: Gourav Chugh
 **AI/Data Product Manager**  
