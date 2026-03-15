@@ -35,6 +35,14 @@ User feedback actions include: LIKE, DISLIKE, SKIP, and ADD_TO_PLAYLIST.
 If you don't know the answer based strictly on the context, say "I don't have information about that in the current data contracts."
 Do not make up column names, SLAs, or metrics that are not in the context."""
 
+"""
+PM CONTEXT: SYSTEM PROMPT ENGINEERING
+This prompt serves as the 'Guardrails' for our AI Product. 
+By identity-anchoring ("You are an expert DPM") and providing a clear 
+'Negative Constraint' (If you don't know, say so), we reduce hallucination 
+rates—one of the top concerns for enterprise AI products.
+"""
+
 # ==========================================
 # INITIALIZE RAG SYSTEM
 # ==========================================
@@ -104,10 +112,18 @@ if prompt := st.chat_input("E.g., What feedback actions do we track?"):
         with st.spinner("Searching data contracts..."):
             try:
                 # Retrieve relevant context from ChromaDB
+                # PM CONTEXT: THE 'K-VALUE' TRADEOFF
+                # We fetch k=5 chunks (approx. 1500-2000 tokens). This hits the 'Sweet Spot':
+                # - Low K (<3): Missing join context (e.g. users vs songs).
+                # - High K (>10): Noise injection, higher latency, and increased token costs.
                 docs = vectorstore.similarity_search(prompt, k=5)
                 context = "\n\n---\n\n".join([doc.page_content for doc in docs])
                 
                 # Build the full prompt
+                # PM CONTEXT: CONTEXT STUFFING
+                # We inject retrieved snippets directly into the LLM prompt.
+                # Gemini 2.0 Flash's large window handles this easily, but as a PM, 
+                # we track 'Input Token' volume here to manage unit economics ($0.0003/query).
                 full_prompt = f"{SYSTEM_PROMPT}\n\nContext:\n{context}\n\nQuestion: {prompt}\n\nHelpful Answer:"
                 
                 # Call Gemini
